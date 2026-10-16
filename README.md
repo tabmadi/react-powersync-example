@@ -1,54 +1,63 @@
-# React PowerSync Sample
+# React PowerSync Example
 
-This is a very basic sample that demonstrates the minimum code required to integrate PowerSync into
-your React app.
+The smallest React app that uses [PowerSync](https://www.powersync.com) as a local-first database. It creates a SQLite database in the browser, writes rows to it, and shows them in a live query.
 
-## Features
+## What it shows
 
-- Create a very simple database
-- Create one table in the database
-- Create one record in the table
-- Query all the records and display them
+PowerSync runs SQLite in the browser with WebAssembly. The app reads and writes the local database, so every query works offline and returns at once. A sync service, when one is connected, moves the changes to and from a backend in the background.
 
-## Setup
+This example shows the local half:
 
-You can use the [proto](https://moonrepo.dev/proto) command to install the required tools.
-Alternatively, you can install **Node.js** and **pnpm** manually and then run the following command:
+1. A `Schema` declares one table, `nodes`, with a `title` column. PowerSync adds the `id` column.
+2. `PowerSyncDatabase` opens `example.db` in the browser.
+3. `PowerSyncContext.Provider` gives the database to the components.
+4. `usePowerSync().execute` writes a row. `useQuery` re-runs its query when the table changes, so the list updates with no extra code.
 
-```bash
-pnpm install
-```
+The data stays after a reload, because the database file lives in the browser storage.
 
-## Configurations
+## Run it
 
-Please note that the configuration in `vite.config.js` is very important. Here’s the configuration:
+1. Install [mise](https://mise.jdx.dev/getting-started.html).
+2. Install the tools and dependencies, then start the dev server:
 
-```javascript
-import {defineConfig} from 'vite';
-import react from '@vitejs/plugin-react';
+   ```bash
+   git clone git@github.com:tabmadi/react-powersync-example.git
+   cd react-powersync-example
+   mise install
+   mise run setup
+   mise run dev
+   ```
 
-export default defineConfig({
-    optimizeDeps: {
-        include: ['@powersync/web > js-logger'],
-        exclude: ['@journeyapps/wa-sqlite', '@powersync/web', '@powersync/react'],
-        esbuildOptions: {
-            target: 'esnext'
-        }
-    },
-    build: {
-        target: 'esnext'
-    },
-    plugins: [react()],
-    worker: {
-        format: 'es'
-    }
-});
-```
+3. Open `http://localhost:5173`, click **Add node** a few times, then reload the page. The rows are still there.
 
-## Usage
+## How it works
 
-After setting up the project, you can start the development server by running:
+| File | Holds |
+| --- | --- |
+| [`src/main.jsx`](src/main.jsx) | The schema, the database, and the two components |
+| [`vite.config.js`](vite.config.js) | The Vite settings that PowerSync needs |
+| [`pnpm-workspace.yaml`](pnpm-workspace.yaml) | The dependency build scripts that pnpm may run |
 
-```bash
-pnpm dev
-```
+PowerSync runs SQLite in a web worker. So `vite.config.js` keeps the PowerSync and wa-sqlite packages out of the dependency pre-bundling, builds the workers as ES modules, and targets `esnext`. Without these settings, the dev server fails to load the database.
+
+## What is deliberately missing
+
+- **Sync**: no backend connector and no PowerSync service. A real app calls `db.connect(connector)` with a connector that fetches credentials and uploads local changes.
+- **Updates and deletes**: the app only inserts.
+- **Tests.**
+
+## Tasks
+
+| Task | Does |
+| --- | --- |
+| `mise run setup` | Installs the locked dependencies and the git hooks |
+| `mise run dev` | Starts the Vite dev server |
+| `mise run build` | Builds the app into `dist/` |
+| `mise run lint` | Runs `lint:js`, `lint:md`, and `lint:secrets` |
+| `mise run format` | Applies every formatter |
+| `mise run check` | Runs `lint` and `test`. Run it before you finish a change |
+| `mise run ci` | Runs exactly what CI runs. The `pre-push` hook runs it too |
+
+## License
+
+Apache License 2.0. See [LICENSE](LICENSE).

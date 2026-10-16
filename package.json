@@ -1,29 +1,26 @@
 {
-  "name": "node",
-  "version": "0.0.0",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@powersync/react": "^1.5.1",
-    "@powersync/web": "^1.14.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.21.0",
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.0.4",
-    "@vitejs/plugin-react": "^4.3.4",
-    "eslint": "^9.21.0",
-    "eslint-plugin-react-hooks": "^5.1.0",
-    "eslint-plugin-react-refresh": "^0.4.19",
-    "globals": "^15.15.0",
-    "vite": "^6.2.0"
-  }
+	"name": "react-powersync-example",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "mise run dev",
+		"build": "mise run build",
+		"lint": "mise run lint",
+		"format": "mise run format",
+		"check": "mise run check"
+	},
+	"dependencies": {
+		"@powersync/react": "^1.5.1",
+		"@powersync/web": "^1.14.1",
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0"
+	},
+	"devDependencies": {
+		"@types/react": "^19.0.10",
+		"@types/react-dom": "^19.0.4",
+		"@vitejs/plugin-react": "^4.3.4",
+		"vite": "^6.2.0"
+	},
+	"packageManager": "pnpm@12.11.2"
 }

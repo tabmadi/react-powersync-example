@@ -1,0 +1,5 @@
+# pnpm runs no dependency build script unless this list allows it.
+# esbuild checks its native binary. wa-sqlite downloads the PowerSync core extension.
+allowBuilds:
+  esbuild: true
+  "@journeyapps/wa-sqlite": true

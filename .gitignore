@@ -12,7 +12,6 @@
 *.swo
 
 # Environment variables files
-.env
 .env*
 
 # Logs
@@ -134,3 +133,10 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Planned work stays local
+*.local.md
+
+# Environment variable files
+.env*
+!.env.example
